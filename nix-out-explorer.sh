@@ -1,4 +1,19 @@
+# set -o errexit
+# set -o pipefail
+# set -e
+set -Eeuo pipefail
+# nixosVersion=$(curl -s "https://nix-channels.s3.amazonaws.com/" \
+#   | xmllint --xpath "/*/*[local-name()='Contents']/*[local-name()='Key']/text()" - \
+#   | grep "nixos-[[:digit:]]" | tail -1 | cut -f1 -d"/")
+
+# nixosReleaseUrl=$(curl -Ls -o /dev/null -w %{url_effective} "https://channels.nixos.org/nixos-23.05")
+# nixosRevision=$(curl "$nixosReleaseUrl/git-revision")
+# nixosPackages=$(curl "$nixosReleaseUrl/packages.json.br")
+
+# https://channels.nixos.org/
+
 systems="$(nix eval --raw --impure --expr 'builtins.currentSystem')"
+
 
 systems+=("x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" \
       "armv6l-linux" "armv7l-linux" "i686-linux" "mipsel-linux" \
