@@ -38,5 +38,5 @@ do
 done
 
 cd "$finalDir"
-bash
+$SHELL
 rm -rf "$finalDir"
