@@ -17,7 +17,7 @@ getSystems() {
 
 fetch() {
   export NIXPKGS_ALLOW_BROKEN=1
-  nixOutPath=$(nix eval nixpkgs-stable#$2.outPath --system $1 --raw --impure)
+  nixOutPath=$(nix eval nixpkgs-stable#"$2".outPath --eval-system "$1" --raw --impure)
   outPathHask=$(echo "$nixOutPath" | cut -d '/' -f4 | cut -d '-' -f1)
   narUrlField=$(curl "$baseUrl$outPathHask.narinfo" | grep URL)
   narUrl="${narUrlField#URL: }"
@@ -27,16 +27,22 @@ fetch() {
 }
 
 mapfile -t selectedSystems < <( getSystems )
+if [[ ${#selectedSystems[@]} -eq 0 ]]; then
+    exit 1
+fi
 mapfile -t selectedDrv < <( nixfzf --raw )
+if [[ ${#selectedDrv[@]} -eq 0 ]]; then
+    exit 1
+fi
 
 for system in "${selectedSystems[@]}";
 do 
   for drv in "${selectedDrv[@]}";
   do
-    fetch $system $drv
+    fetch "$system" "$drv"
   done
 done
 
-cd "$finalDir"
+cd "$finalDir" || exit
 $SHELL
 rm -rf "$finalDir"
