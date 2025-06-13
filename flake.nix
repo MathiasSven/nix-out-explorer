@@ -1,5 +1,6 @@
 {
   inputs.nixfzf.url = "github:MathiasSven/nixfzf/nix";
+  inputs.nixfzf.inputs.nixpkgs.follows = "nixpkgs";
 
   outputs =
     {
