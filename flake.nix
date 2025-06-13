@@ -23,7 +23,6 @@
         nativeBuildInputs = [ makeWrapper ];
 
         buildInputs = with pkgs.${system}; [
-          nix
           curl
           fzf
           nixfzf.packages.${system}.default
